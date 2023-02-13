@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube
+spec:
+  selector:
+    matchLabels:
+      app: kube
+  template:
+    metadata:
+      labels:
+        app: kube
+    spec:
+      containers:
+        - name: kube
+          image: kubenodejs
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Never
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube
+spec:
+  selector:
+    app: kube
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer
